@@ -1,0 +1,130 @@
+risma/schema.prisma
+======================================================================
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          Role      @default(CLIENT)
+  phone         String?
+  organisation  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  consultations Consultation[]
+  downloads     Download[]
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Consultation {
+  id          String             @id @default(cuid())
+  userId      String?
+  name        String
+  email       String
+  phone       String?
+  service     String
+  founder     String             // "Helen" | "Co-Founder"
+  date        DateTime
+  timeSlot    String
+  message     String?
+  status      ConsultationStatus @default(PENDING)
+  notes       String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  user        User?              @relation(fields: [userId], references: [id])
+}
+
+model FileResource {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  category    FileCategory
+  fileUrl     String
+  fileSize    String?
+  isPublic    Boolean    @default(false)
+  uploadedAt  DateTime   @default(now())
+  downloads   Download[]
+}
+
+model Download {
+  id         String       @id @default(cuid())
+  userId     String
+  fileId     String
+  createdAt  DateTime     @default(now())
+  user       User         @relation(fields: [userId], references: [id])
+  file       FileResource @relation(fields: [fileId], references: [id])
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String
+  category    String
+  imageUrl    String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  name         String
+  role         String
+  organisation String?
+  quote        String
+  category     String   // Schools | Parents | Students
+  rating       Int      @default(5)
+  approved     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  service   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+
+enum ConsultationStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum FileCategory {
+  CURRICULUM_GUIDE
+  SCHOOL_CHECKLIST
+  APPLICATION_FORM
+  UNIVERSITY_GUIDE
+  TRAINING_MATERIAL
+  GENERAL
+}
+
