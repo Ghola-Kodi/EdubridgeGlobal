@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary:    #0A2A66;
+  --color-gold:       #D4A017;
+  --color-gold-dark:  #b8870e;
+  --color-teal:       #1C8EA6;
+  --color-soft-grey:  #F2F4F7;
+  --color-charcoal:   #333333;
+  --color-white:      #FFFFFF;
+  --color-border:     #E5E5E5;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  color: var(--color-charcoal);
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.btn-primary {
+  @apply bg-gold text-white font-heading font-bold text-sm uppercase tracking-wide px-7 py-3 rounded-md transition-all duration-200 hover:bg-gold-dark hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.btn-outline {
+  @apply border-2 border-white text-white font-heading font-bold text-sm uppercase tracking-wide px-7 py-3 rounded-md transition-all duration-200 hover:bg-white hover:text-primary;
+}
+
+.btn-teal {
+  @apply bg-teal text-white font-heading font-bold text-sm uppercase tracking-wide px-7 py-3 rounded-md transition-all duration-200 hover:opacity-90;
+}
+
+.section-label {
+  @apply inline-block font-heading text-xs font-semibold tracking-widest uppercase text-gold mb-2;
+}
+
+.divider {
+  @apply w-14 h-1 bg-gold rounded-full my-3;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow-sm border border-border p-6 transition-all duration-200;
+}
+
+.card:hover {
+  @apply -translate-y-1 shadow-md;
+}
+
+.input-field {
+  @apply w-full px-4 py-3 border-2 border-border rounded text-charcoal font-body text-base transition-all duration-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10;
+}
+
+.hero-overlay {
+  background: linear-gradient(135deg, rgba(10,42,102,0.80) 0%, rgba(10,42,102,0.55) 100%);
+}
+
